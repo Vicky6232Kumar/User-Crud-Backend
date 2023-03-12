@@ -7,17 +7,23 @@ const sendToken =require("../utils/jwtToken")
 const sendEmail = require("../utils/sendEmail")
 const crypto = require('crypto')
 const {isAuthenenticatedUser, authorizedRoles} = require('../middleware/auth')
+const cloudinary = require("cloudinary")
+
 
 // Router - 1 Create A user
 
 router.post('/user/new', catchAsyncError( async (req,res)=>{
-
-    const {name, email, password} = req.body;
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "avatars",
+        width: 150,
+        crop : "scale",
+    })
+    const {username, email, password} = req.body;
     const user = await User.create({
-        name, email, password,
+        username, email, password,
         avatar:{
-            public_id : "This is public is",
-            url : "profilepicUrl"
+            public_id : myCloud.public_id,
+            url : myCloud.secure_url
         }
     })
 
@@ -169,9 +175,27 @@ router.put('/user/password/update', isAuthenenticatedUser , catchAsyncError(asyn
 router.put('/user/profile/update', isAuthenenticatedUser , catchAsyncError(async (req , res)=>{
   
     const newUserData = {
-        name : req.body.name,
+        username : req.body.name,
         email : req.body.email
     };
+
+    if(req.body.avatar !== ""){
+        const user = await User.findById(req.user.id);
+        const imageId = user.avatar.public_id
+
+        await cloudinary.v2.uploader.destroy(imageId)
+
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: "avatars",
+            width: 150,
+            crop : "scale",
+        })
+
+        newUserData.avatar = {
+            public_id : myCloud.public_id,
+            url : myCloud.secure_url
+        };
+    }
 
     const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
         new:true,

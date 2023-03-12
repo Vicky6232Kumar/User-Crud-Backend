@@ -7,7 +7,7 @@ const crypto = require('crypto')
 
 const userSchema = new Schema({
     
-    name:{
+    username:{
         type:String,
         required:[true, "Please enter your name"],
         maxLength:[15, "Name cannot exceed 15 characters"],
