@@ -10,9 +10,11 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(fileUpload())
  
-app.use('/api/v1', require('./routes/productsRoutes'))
+// app.use('/api/v1', require('./routes/productsRoutes'))
 app.use('/api/v2', require('./routes/userRoutes'))
-app.use('/api/v3', require('./routes/orderRoutes'))
+// app.use('/api/v3', require('./routes/orderRoutes'))
+
+
 //Middleware for error
 
 app.use(errorMiddleware)
