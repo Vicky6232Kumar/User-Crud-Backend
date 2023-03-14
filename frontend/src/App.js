@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import Alert from "./components/layouts/Alert";
 import NotFound from "./components/layouts/NotFound";
 import Admin from "./components/User/Admin";
+import Home from "./components/NavbarOptions/Home";
 
 function App() {
   
@@ -44,7 +45,7 @@ function App() {
         <Navbar showAlert = {showAlert} />
         <Alert alert= {alert}/>
         <Routes>
-          {/* <Route exact path="/" element={<Home />} /> */}
+          <Route exact path="/" element={<Home />} />
           {/* <Route exact path="/events" element={<EventsPage />} /> */}
           <Route exact path="/login" element={<Login showAlert = {showAlert} />}  />
           <Route exact path="/signup" element={<SignUp showAlert = {showAlert} />}/>
