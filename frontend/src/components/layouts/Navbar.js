@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from '../../actions/userAction';
 import {useDispatch,useSelector} from 'react-redux'
 
@@ -7,12 +7,14 @@ import {useDispatch,useSelector} from 'react-redux'
 const Navbar = ({showAlert}) => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const  {isAuthenticated, user}  = useSelector(state => state.users)
 
   const logoutUser = (e) =>{
     e.preventDefault();
     dispatch(logout())
     showAlert("Logout Successfully")
+    navigate("/")
   }
  
   return (
@@ -31,12 +33,12 @@ const Navbar = ({showAlert}) => {
           id="services"
           className=" service absolute bg-zinc-100 w-full left-0 top-16 z-30  transition md:translate-x-0 md:flex justify-center items-center md:static md:bg-white"
         >
-          <div className="p-3 cursor-pointer hover:underline hover:underline-offset-8  text-sm">
+          <div className="p-3  hover:underline hover:underline-offset-8  text-sm">
           <Link to="/" rel="noopener noreferrer">
               Home
             </Link>
           </div>
-          <div className="p-3 text-sm cursor-pointer hover:underline hover:underline-offset-8 ">
+          <div className="p-3 text-sm  hover:underline hover:underline-offset-8 ">
           <Link to="/news" rel="noopener noreferrer">
             News
             </Link>
@@ -51,19 +53,19 @@ const Navbar = ({showAlert}) => {
             Requests
             </Link>
           </div>
-          <div className="p-3 text-sm cursor-pointer hover:underline hover:underline-offset-8 ">
+          <div className="p-3 text-sm  hover:underline hover:underline-offset-8 ">
           <Link to="/Feed" rel="noopener noreferrer">
             Feed
             </Link>
           </div>
           
-          {isAuthenticated? <div className="p-3 text-sm cursor-pointer hover:underline hover:underline-offset-8 ">
+          {isAuthenticated? <div className="p-3 text-sm  hover:underline hover:underline-offset-8 ">
           <Link to="/account" rel="noopener noreferrer">
               Account
             </Link>
           </div> : ""}
 
-          {( isAuthenticated &&  user.role === "admin") ? <div className="p-3 text-sm cursor-pointer hover:underline hover:underline-offset-8 ">
+          {( isAuthenticated &&  user.role === "admin") ? <div className="p-3 text-sm  hover:underline hover:underline-offset-8 ">
           <Link to="/admin" rel="noopener noreferrer">
               Admin
             </Link>

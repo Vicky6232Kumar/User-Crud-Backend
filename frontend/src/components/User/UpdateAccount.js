@@ -1,8 +1,9 @@
 import React, { useState , useEffect } from "react";
 import {  useNavigate } from "react-router-dom";
-import { loadUser, updateProfile } from '../../actions/userAction'
+import { clearError, loadUser, updateProfile } from '../../actions/userAction'
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstant";
+import Spinner from '../layouts/Loading'
 
 
 const UpdateAccount = ({showAlert}) => {
@@ -10,7 +11,7 @@ const UpdateAccount = ({showAlert}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {user} = useSelector(state => state.users)
-    const { isUpdated } = useSelector((state) => state.profile)
+    const { isUpdated,loading,error } = useSelector((state) => state.profile)
 
     const [name, setName] = useState("")
     const [email , setEmail] = useState("")
@@ -49,6 +50,10 @@ const UpdateAccount = ({showAlert}) => {
             setEmail(user.email)
             setAvatar(user.avatar.url)
         }
+        if(error){
+          showAlert("Something wents wrong")
+          dispatch(clearError())
+        }
         if(isUpdated){
           showAlert("Profile Updated")
             dispatch(loadUser)
@@ -57,11 +62,11 @@ const UpdateAccount = ({showAlert}) => {
             type:UPDATE_PROFILE_RESET
           })
         }
-      }, [user,dispatch,isUpdated,navigate, showAlert])
+      }, [user,dispatch,isUpdated,navigate, showAlert, error])
       
   return (
     <div className="flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-8">
+      {loading? <Spinner/> : <div className="w-full max-w-sm space-y-8">
         <div className="text-center text-2xl ">Update Profile</div>
 
         <form
@@ -105,8 +110,8 @@ const UpdateAccount = ({showAlert}) => {
             </div>
 
             <div className="pb-2">
-              <label htmlFor="password" className="font-semibold">
-                Select New Profile Image <img src={avatar} alt="" />
+              <label htmlFor="avatar" className="font-semibold">
+                Select New Profile Image <img src={avatar} className="w-16 rounded-md" alt="" />
               </label>
               <input
                 id="avatar"
@@ -128,7 +133,7 @@ const UpdateAccount = ({showAlert}) => {
             </button>
           </div>
         </form>
-      </div>
+      </div>}
     </div>
   )
 }

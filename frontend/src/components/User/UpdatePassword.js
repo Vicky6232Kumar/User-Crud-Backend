@@ -1,14 +1,15 @@
 import React, { useState , useEffect } from "react";
 import {  useNavigate } from "react-router-dom";
-import { updatePassword } from '../../actions/userAction'
+import { clearError, updatePassword } from '../../actions/userAction'
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstant";
+import Spinner from '../layouts/Loading'
 const UpdatePassword = ({showAlert}) => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { isUpdated } = useSelector((state) => state.profile)
+    const { isUpdated, loading, error } = useSelector((state) => state.profile)
 
     const [oldPassword, setOldPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -25,6 +26,11 @@ const UpdatePassword = ({showAlert}) => {
       }
 
       useEffect(() => {
+
+        if(error){
+          showAlert(error)
+          dispatch(clearError())
+        }
         
         if(isUpdated){
           navigate("/account");
@@ -33,11 +39,11 @@ const UpdatePassword = ({showAlert}) => {
           })
           showAlert("Password Updated")
         }
-      }, [dispatch,isUpdated,navigate, showAlert])
+      }, [dispatch,isUpdated,navigate, showAlert, error])
   return (
 
     <div className="flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-8">
+      {loading? <Spinner/> : <div className="w-full max-w-sm space-y-8">
         <div className="text-center text-2xl ">Change account</div>
 
         <form
@@ -108,7 +114,7 @@ const UpdatePassword = ({showAlert}) => {
             </button>
           </div>
         </form>
-      </div>
+      </div>}
     </div>
   )
 }

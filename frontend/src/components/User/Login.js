@@ -2,13 +2,14 @@ import React, { useState , useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import {clearError, login} from '../../actions/userAction'
+import Spinner from  '../layouts/Loading'
 
 
 const Login = ({showAlert}) => {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const  {isAuthenticated, error }  = useSelector(state => state.users)
+    const  {isAuthenticated, error, loading }  = useSelector(state => state.users)
 
     const [credential, setcredential] = useState({ email: "", password: "" });
     
@@ -39,7 +40,7 @@ const Login = ({showAlert}) => {
 
     return (
         <div className="flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
-            <div className="w-full max-w-sm space-y-8">
+            { loading ?  <Spinner/> : <div className="w-full max-w-sm space-y-8">
                 <div className="text-center text-2xl ">Login to a account</div>
 
                 <form
@@ -103,7 +104,7 @@ const Login = ({showAlert}) => {
                         Don't have an account?
                     </Link>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

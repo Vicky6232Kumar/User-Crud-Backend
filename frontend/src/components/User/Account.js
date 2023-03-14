@@ -5,7 +5,7 @@ const Account = ({user}) => {
   return (
     <div className='w-fit mx-auto my-24'>
       <div className='mx-auto w-fit  rounded-full' >
-        <img src={user.avatar.url} alt={user.name} />
+        <img src={user.avatar.url} className="rounded-md" alt={user.name} />
         
       </div>
       <div className='text-md text-center'>

@@ -2,12 +2,13 @@ import React, { useState , useEffect } from "react";
 import {  useNavigate } from "react-router-dom";
 import { signup } from "../../actions/userAction";
 import { useSelector, useDispatch } from "react-redux";
+import Spinner from "../layouts/Loading"
 
 const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {isAuthenticated} = useSelector(state => state.users)
+  const {isAuthenticated ,loading} = useSelector(state => state.users)
 
     const [credential, setcredential] = useState({
         username: "",
@@ -58,7 +59,7 @@ const SignUp = () => {
       
   return (
     <div className="flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm space-y-8">
+      {loading ? <Spinner/> : <div className="w-full max-w-sm space-y-8">
         <div className="text-center text-2xl ">Create a account</div>
 
         <form
@@ -158,7 +159,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
-      </div>
+      </div>}
     </div>
   )
 }
