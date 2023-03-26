@@ -1,11 +1,12 @@
-import React, { useRef } from 'react'
+import React, {useEffect, useRef } from 'react'
 import {  useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useAlert } from 'react-alert'
 import {
   CardNumberElement, CardCvcElement, CardExpiryElement, useStripe, useElements,
 } from '@stripe/react-stripe-js';
 import axios from 'axios';
+import {createOrder, clearError} from '../../actions/orderAction'
 
 
 
@@ -13,17 +14,28 @@ const Payment = () => {
 
   const navigate = useNavigate();
   const alert = useAlert();
+  const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useSelector(state => state.users)
   const btnPay = useRef()
 
-  const { shippingInfo } = useSelector(state => state.cart)
-  // const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"))
-  // const {error} = useSelector((state) => state.newOrder)
+  const { shippingInfo, cartItems } = useSelector(state => state.cart)
+  const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"))
+  const {error} = useSelector((state) => state.newOrder)
 
   const paymentData = {
-    amount: 10000
+    amount: Math.round(orderInfo.total * 100)
+  }
+
+  const order = {
+    shippingInfo,
+    orderItems : cartItems,
+    itemsPrice: orderInfo.subtotal,
+    shippingPrice : orderInfo.shippingCharges,
+    taxPrice : orderInfo.tax,
+    totalPrice : orderInfo.total,
+    
   }
 
   const submitHandler = async (e) => {
@@ -62,10 +74,17 @@ const Payment = () => {
       }
       else{
         if(result.paymentIntent.status === "succeeded"){
+
+          order.paymentInfo = {
+            id: result.paymentIntent.id,
+            status: result.paymentIntent.status
+          }
+
+          dispatch(createOrder(order))
           navigate("/success")
         }
         else{
-          alert.error("error")
+          alert.error("There is payment issue")
         }
       }
       
@@ -74,6 +93,14 @@ const Payment = () => {
       alert.error(error.response.data.message)
     }
   }
+
+  useEffect(() => {
+    if(error){
+      alert.error(error)
+      dispatch(clearError())
+    }
+  }, [error, dispatch, alert])
+  
 
   return (
     <div className="flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8 ">

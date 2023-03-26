@@ -22,9 +22,7 @@ const Checkout = () => {
   const [pincode, setPincode] = useState(shippingInfo.pincode)
   const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo)
   const [email, setEmail] = useState(shippingInfo.email)
-
-  // const [subTotal, setSubTotal] = useState()
-  // const [total, setTotal] = useState()
+  const [name, setName] = useState(shippingInfo.name)
 
 
   const removeFromCartHandler = (id) => {
@@ -33,7 +31,13 @@ const Checkout = () => {
 
   }
 
-  
+ 
+
+   const subtotal = (cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0))
+  const shippingCharges = (subtotal>1000 ? 0 :100)
+  const tax = subtotal * 0.02;
+  const total  = subtotal+shippingCharges+tax;
+
 
   const shippingSubmit = (e) => {
     e.preventDefault();
@@ -42,18 +46,15 @@ const Checkout = () => {
       alert.message("Phone number should 10 digit")
       return;
     }
-    dispatch(saveShippingInfo({address, city ,state, country, pincode, phoneNo}))
+
+    dispatch(saveShippingInfo({address, city ,state, country, pincode, phoneNo,email ,name}))
+    const data = {
+      subtotal, shippingCharges, tax, total
+    }
+    sessionStorage.setItem("orderInfo", JSON.stringify(data))
     navigate('/order/confirm')
-    // sessionStorage.setItem("orderInfo", JSON.stringify({}))
+
   }
-
-  // const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
-  // const shippingCharges = subtotal>1000 ? 0 :100
-  // const tax = subtotal * 0.18;
-  // const total  = subtotal+shippingCharges+tax;
-
-
-  
 
   return (
   
@@ -130,17 +131,17 @@ const Checkout = () => {
 
                 <div className="flex justify-between text-base text-gray-900">
                   <p className="text-gray-500">Subtotal</p>
-                  <p className="font-medium">₹{`${cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}`}</p>
+                  <p className="font-medium">₹{subtotal}</p>
 
                 </div>
                 <div className="flex justify-between text-base py-4  text-gray-900">
                   <p className="text-gray-500">Shipping </p>
-                  <p className="font-medium">₹100</p>
+                  <p className="font-medium">₹{shippingCharges}</p>
 
                 </div>
                 <div className="flex justify-between text-base  text-gray-900">
                   <p className="text-gray-500">Taxes</p>
-                  <p className="font-medium">₹400</p>
+                  <p className="font-medium">₹{tax} </p>
 
                 </div>
 
@@ -149,7 +150,7 @@ const Checkout = () => {
               <div className="border-t border-gray-300 py-6 px-4 sm:px-6">
                 <div className="flex justify-between text-base font-medium text-gray-900">
                   <p >Total</p>
-                  <p>₹total</p>
+                  <p>₹{total} </p>
 
                 </div>
               </div>
@@ -167,10 +168,26 @@ const Checkout = () => {
                 <div className="pt-6 ">
 
 
-                  <h2 className=" leading-7 text-gray-900 text-lg font-medium ">Contact information</h2>
+                  <h2 className=" leading-7 text-gray-900 text-lg font-medium ">Billing information</h2>
 
                   <div className="w-3/5">
 
+                  <div className="mt-6 ">
+                      <label htmlFor="name" className=" block text-sm font-medium leading-6 text-gray-900">
+                        Full Name.
+                      </label>
+                      <div className="mt-2 w-3/5">
+                        <input
+                          required
+                          type="text"
+                          name="text"
+                          autoComplete="phone"
+                          className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6"
+                          value={name} size="10"
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                      </div>
+                    </div>
 
                     <div className="mt-6 ">
                       <label htmlFor="phone" className=" block text-sm font-medium leading-6 text-gray-900">

@@ -1,7 +1,6 @@
 import React from 'react'
 import MetaData from '../layouts/MetaData'
 import ProductList from '../products/ProductList'
-import CategoryFilter from '../products/CategoryFilter'
 
 export default function Home() {
 
@@ -10,7 +9,6 @@ export default function Home() {
       <MetaData title='Home' />
       
       <ProductList/>
-      {/* <CategoryFilter /> */}
       
     </div>
   )

@@ -5,10 +5,10 @@ import { useSelector } from 'react-redux'
 
 const ConfirmOrder = () => {
 
-    // const dispatch = useDispatch();
-    const { user } = useSelector(state => state.users)
     const { cartItems, shippingInfo } = useSelector(state => state.cart)
     const [value, setValue] = useState(0)
+    const data = JSON.parse(sessionStorage.getItem("orderInfo"))
+
 
     const handleUPI = () => {
 
@@ -31,9 +31,10 @@ const ConfirmOrder = () => {
                 <div>
                     <p className='text-2xl'>Shipping info</p>
                     <div className='p-2 mt-4 text-base'>
-                        <p>Name: <span className="text-gray-500"> {user.username} </span></p>
+                        <p>Name: <span className="text-gray-500"> {shippingInfo.name} </span></p>
                         <p>Phone: <span className="text-gray-500"> {shippingInfo.phoneNo}</span></p>
-                        <p>Address: <span className="text-gray-500"> {shippingInfo.address}</span></p>
+                        <p>Email: <span className="text-gray-500"> {shippingInfo.email}</span></p>
+                        <p>Address: <span className="text-gray-500">{`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pincode}` }</span></p>
                     </div>
                 </div>
 
@@ -71,7 +72,7 @@ const ConfirmOrder = () => {
 
             <div className='mx-auto mt-24'>
                 <p className='text-2xl mb-6'>Order Summary</p>
-                <p>Total payable amount : <span> ₹4000</span></p>
+                <p>Total payable amount : <span> ₹{data.total}</span></p>
                 <div className=' mt-12'>
                     <p className='text-2xl  '>Choose Payment Method</p>
                     <div className='mt-8 text-md text-center '>

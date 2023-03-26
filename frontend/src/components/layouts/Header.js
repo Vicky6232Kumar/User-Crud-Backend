@@ -782,10 +782,10 @@ export default function Header() {
                                                 </div>
                                             </div>
 
-                                            <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                                            {cartItems.length !==0 && <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                                     <p>Subtotal</p>
-                                                    <p>$262.00</p>
+                                                    <p>₹{`${cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}`}</p>
                                                 </div>
                                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                                 <div className="mt-6">
@@ -810,7 +810,7 @@ export default function Header() {
                                                         </Link>
                                                     </p>
                                                 </div>
-                                            </div>
+                                            </div>}
                                         </div>
                                     </Dialog.Panel>
                                 </Transition.Child>

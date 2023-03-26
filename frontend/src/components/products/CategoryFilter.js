@@ -101,7 +101,7 @@ export default function Example() {
 
     useEffect(() => {
         dispatch(getAllProducts(keyword, price))
-      }, [price, keyword])
+      }, [price, keyword,dispatch])
 
 
     return (

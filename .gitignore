@@ -2,13 +2,5 @@ node_modules
 
 backend/config
 
-backend/database/models/orderModel.js
 
-backend/database/models/productModel.js
-
-backend/routes/orderRoutes.js
-
-backend/routes/productsRoutes.js
-
-backend/utils/apiFeatures.js
 

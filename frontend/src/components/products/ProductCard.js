@@ -144,9 +144,9 @@ const ProductCard = (props) => {
                                                                 ))}
                                                             </div>
                                                             <p className="sr-only">{product.rating} out of 5 stars</p>
-                                                            <a href="#" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                            <div  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
                                                                 {product.reviewCount} reviews
-                                                            </a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </section>
@@ -198,9 +198,9 @@ const ProductCard = (props) => {
                                                         <div className="mt-10">
                                                             <div className="flex items-center justify-between">
                                                                 <h4 className="text-sm font-medium text-gray-900">Size</h4>
-                                                                <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                                <div  className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
                                                                     Size guide
-                                                                </a>
+                                                                </div>
                                                             </div>
 
                                                             <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
