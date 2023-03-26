@@ -1,91 +1,114 @@
-import React, { useState , useEffect } from "react";
-import {  useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { clearError, updatePassword } from '../../actions/userAction'
 import { useSelector, useDispatch } from "react-redux";
 import { UPDATE_PASSWORD_RESET } from "../../constants/userConstant";
 import Spinner from '../layouts/Loading'
-const UpdatePassword = ({showAlert}) => {
+import { EyeSlashIcon, EyeIcon } from '@heroicons/react/20/solid'
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const { isUpdated, loading, error } = useSelector((state) => state.profile)
+const UpdatePassword = ({ showAlert }) => {
 
-    const [oldPassword, setOldPassword] = useState("")
-    const [newPassword, setNewPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const updatePasswordSubmit = async (e) =>{
-        e.preventDefault();
-        const myForm = new FormData();
-        myForm.set("oldPassword", oldPassword);
-        myForm.set("newPassword", newPassword)
-        myForm.set("confirmPassword", confirmPassword)
+  const { isUpdated, loading, error } = useSelector((state) => state.profile)
 
-        dispatch(updatePassword(myForm))
-      }
+  const [oldPassword, setOldPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [seePassword, setSeePassword] = useState("password")
 
-      useEffect(() => {
+  const updatePasswordSubmit = async (e) => {
+    e.preventDefault();
+    const myForm = new FormData();
+    myForm.set("oldPassword", oldPassword);
+    myForm.set("newPassword", newPassword)
+    myForm.set("confirmPassword", confirmPassword)
 
-        if(error){
-          showAlert(error)
-          dispatch(clearError())
-        }
-        
-        if(isUpdated){
-          navigate("/account");
-          dispatch({
-            type:UPDATE_PASSWORD_RESET
-          })
-          showAlert("Password Updated")
-        }
-      }, [dispatch,isUpdated,navigate, showAlert, error])
+    dispatch(updatePassword(myForm))
+  }
+
+  useEffect(() => {
+
+    if (error) {
+      showAlert(error)
+      dispatch(clearError())
+    }
+
+    if (isUpdated) {
+      navigate("/account");
+      dispatch({
+        type: UPDATE_PASSWORD_RESET
+      })
+      showAlert("Password Updated")
+    }
+  }, [dispatch, isUpdated, navigate, showAlert, error])
+
+
+  const viewPassword = () => {
+    if (seePassword === "password") {
+      setSeePassword("text")
+    }
+    else {
+      setSeePassword("password")
+    }
+
+  }
+
+
   return (
 
     <div className="flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
-      {loading? <Spinner/> : <div className="w-full max-w-sm space-y-8">
-        <div className="text-center text-2xl ">Change account</div>
+      {loading ? <Spinner /> : <div className="w-full max-w-sm space-y-8">
+        <div className="text-center text-2xl ">Update Password</div>
 
         <form
-          className="mt-8 space-y-6"
+          className="mt-8 "
           action="#"
           method="POST"
           encType="multipart/form-data"
           onSubmit={updatePasswordSubmit}
         >
           <div>
-            
-          <div className="pb-2">
+
+            <div>
               <label htmlFor="oldPassword" className="font-semibold">
                 Old Password
               </label>
               <input
                 id="password"
                 name="oldPassword"
-                type="password"
+                type={seePassword}
                 autoComplete="current-password"
                 required
-                className="block w-full my-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                className="block w-full mt-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                 value={oldPassword}
-                onChange={(e)=>setOldPassword(e.target.value)}
+                onChange={(e) => setOldPassword(e.target.value)}
               />
+              {seePassword === "password" ? <EyeSlashIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} /> :
+                <EyeIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} />
+              }
             </div>
 
 
-            <div className="pb-2">
+            <div>
               <label htmlFor="newPassword" className="font-semibold">
                 New Password
               </label>
               <input
                 id="password"
                 name="newPassword"
-                type="password"
+                type={seePassword}
                 autoComplete="current-password"
                 required
-                className="block w-full my-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                className="block w-full mt-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                 value={newPassword}
-                onChange={(e)=>setNewPassword(e.target.value)}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
+              {seePassword === "password" ? <EyeSlashIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} /> :
+                <EyeIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} />
+              }
             </div>
 
             <div>
@@ -95,13 +118,16 @@ const UpdatePassword = ({showAlert}) => {
               <input
                 id="cpassword"
                 name="confirmPassword"
-                type="password"
+                type={seePassword}
                 autoComplete="current-password"
                 required
-                className="block w-full my-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
+                className="block w-full mt-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                 value={confirmPassword}
-                onChange={(e)=>setConfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              {seePassword === "password" ? <EyeSlashIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} /> :
+                <EyeIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} />
+              }
             </div>
           </div>
 

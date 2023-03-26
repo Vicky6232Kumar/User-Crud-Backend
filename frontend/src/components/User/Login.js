@@ -3,15 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import {clearError, login} from '../../actions/userAction'
 import Spinner from  '../layouts/Loading'
+import {useAlert} from 'react-alert'
+import MetaData from "../layouts/MetaData";
+import { EyeSlashIcon, EyeIcon} from '@heroicons/react/20/solid'
 
 
-const Login = ({showAlert}) => {
+const Login = () => {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const alert = useAlert();
     const  {isAuthenticated, error, loading }  = useSelector(state => state.users)
 
     const [credential, setcredential] = useState({ email: "", password: "" });
+    const [seePassword, setSeePassword] = useState("password")
     
 
     const loginSubmit = async (e) => {
@@ -25,22 +30,35 @@ const Login = ({showAlert}) => {
 
     useEffect(() => {
         if(error){
-            showAlert(error)
+            alert.error(error)
             dispatch(clearError())
         }
 
       if(isAuthenticated){
-        showAlert('Login Successfull')
-        navigate("/account");
+        alert.success("Login Success")
+        navigate("/");
       }
       
-    }, [isAuthenticated,navigate, error, dispatch, showAlert ])
+    }, [isAuthenticated,navigate, error, dispatch, alert ])
+
+
+    const viewPassword =() =>{
+        if(seePassword==="password"){
+            setSeePassword("text")
+        }
+        else{
+            setSeePassword("password")
+        }
+
+    }
     
 
 
     return (
         <div className="flex items-center justify-center py-24 px-4 sm:px-6 lg:px-8">
-            { loading ?  <Spinner/> : <div className="w-full max-w-sm space-y-8">
+            <MetaData title= 'Login' />
+            { loading ?  <Spinner/> : 
+            <div className="w-full max-w-sm space-y-8">
                 <div className="text-center text-2xl ">Login to a account</div>
 
                 <form
@@ -67,23 +85,28 @@ const Login = ({showAlert}) => {
                             />
                         </div>
 
-                        <div>
+                        <div className="w-full">
                             <label htmlFor="password" className="font-semibold">
                                 Password
                             </label>
                             <input
                                 id="password"
                                 name="password"
-                                type="password"
+                                type={seePassword}
                                 autoComplete="current-password"
                                 required
                                 className="block w-full mt-2 rounded-md p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                                 value={credential.password} onChange={onChange}
                             />
+                            
+                            {seePassword==="password" ? <EyeSlashIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword} /> :
+                            <EyeIcon className="relative -top-[1.85rem] left-[21rem] h-5 w-5 cursor-pointer text-gray-400 group-hover:text-gray-500" aria-hidden="true" onClick={viewPassword}/>
+                            }
+                            
                         </div>
                     </div>
 
-                    <div className="text-right text-blue-500 mt-2 mb-6 ">
+                    <div className="text-right text-blue-500 mb-6 ">
                         <Link to="/signup" rel="noopener noreferrer">
                             Forget Password?
                         </Link>
