@@ -3,9 +3,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { profileReducer, userReducer } from './reducers/userReducer';
-import { productDetailsReducer, productReducer } from './reducers/productReducer';
+import { productDetailsReducer, productReducer,newReviewReducer } from './reducers/productReducer';
 import { cartReducer } from './reducers/cartReducer';
-import {newOrderReducer, myOrderReducer} from './reducers/orderReducer'
+import {newOrderReducer, myOrdersReducer, orderDetailsReducer} from './reducers/orderReducer'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -26,7 +26,9 @@ const reducers = combineReducers(
         productDetails: productDetailsReducer,
         cart: persistedReducer,
         newOrder : newOrderReducer,
-        myOrders: myOrderReducer
+        myOrders: myOrdersReducer,
+        orderDetails: orderDetailsReducer,
+        newReview : newReviewReducer
     }
 )
 

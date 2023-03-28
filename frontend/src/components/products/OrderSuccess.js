@@ -14,7 +14,7 @@ const OrderSuccess = () => {
                 </p>
             </div>
 
-            <Link to="/orders/me">
+            <Link to="/orders">
                 <div className='mt-6 mb-4 w-2/5 p-2 mx-auto bg-indigo-600 text-white text-center hover:bg-indigo-500 rounded-lg'>View Orders</div>
             </Link>
 

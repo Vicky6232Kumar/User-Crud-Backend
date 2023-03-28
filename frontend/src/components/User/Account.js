@@ -32,7 +32,7 @@ const Account = ({ user }) => {
           <p className='text-base tracking-tight  text-gray-500'>{String(user.createdAt).substring(0,10)}</p>
         </div>
 
-        <Link to="">
+        <Link to="/orders">
           <div className='mb-6 p-2 bg-indigo-600 text-white text-center hover:bg-indigo-500 rounded-lg'>My Orders</div>
         </Link>
 

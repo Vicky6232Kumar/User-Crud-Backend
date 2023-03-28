@@ -14,7 +14,7 @@ import store from './store'
 import { loadUser } from "./actions/userAction";
 import { useSelector } from "react-redux";
 import NotFound from "./components/layouts/NotFound";
-import Admin from "./components/User/Admin";
+import Admin from "./components/Admin/Admin";
 import Home from "./components/NavbarOptions/Home";
 import ProductOverview from './components/products/ProductOverview'
 import Header from './components/layouts/Header'
@@ -24,6 +24,7 @@ import Payment from './components/products/Payment'
 import ConfirmOrder from './components/products/ConfirmOrder'
 import OrderSuccess from "./components/products/OrderSuccess";
 import MyOrders from "./components/User/MyOrders";
+import OrderDetails from "./components/OrderLayout/OrderDetails";
 import axios from "axios";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -65,8 +66,8 @@ function App() {
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path="/notfound" element={<NotFound />} />
         <Route excat path="/checkout" element={<Checkout />} />
-        <Route excat path="/order/confirm" element={<ConfirmOrder />} />
-        {isAuthenticated && <Route exact path="/admin" element={<Admin />} />}
+        {isAuthenticated && <Route excat path="/order/confirm" element={<ConfirmOrder />} /> }
+        
         {isAuthenticated && <Route exact path="/account" element={<Account user={user} />} />}
         {isAuthenticated && <Route exact path="/account/update" element={<UpdateAccount />} />}
         {isAuthenticated && <Route exact path="/password/update" element={<UpdatePassword />} />}
@@ -76,7 +77,10 @@ function App() {
           } />
         )}
         {isAuthenticated && <Route excat path="/success" element={<OrderSuccess />} /> }
-        {isAuthenticated && <Route excat path="/orders/me" element={<MyOrders />} /> }
+        {isAuthenticated && <Route excat path="/orders" element={<MyOrders />} /> }
+        {isAuthenticated && <Route excat path="/order/:id" element={<OrderDetails />} /> }
+
+        {isAuthenticated && <Route exact path="/admin/*" element={<Admin />} />}
 
       </Routes>
 
