@@ -72,7 +72,23 @@ const ProductCard = (props) => {
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">color</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">₹{props.product.price}</p>
+
+                <div>
+                <p className="text-sm font-medium text-gray-900 text-right">₹{props.product.price}</p>
+                <div className="flex items-center">
+                {[0, 1, 2, 3, 4].map((rating) => (
+                      <StarIcon
+                        key={rating}
+                        className={classNames(
+                            props.product.ratings > rating ? 'text-yellow-600' : 'text-gray-200',
+                          'h-4 w-4 flex-shrink-0 mt-1.5'
+                        )}
+                        aria-hidden="true"
+                      />
+                    ))}
+                </div>
+                </div>
+                
             </div>
 
             {/* Product Quickview  */}

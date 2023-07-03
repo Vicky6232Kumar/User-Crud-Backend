@@ -38,7 +38,7 @@ const OrderList = ({ product, orderStatus }) => {
                 </div>
 
                 <div className='flex text-indigo-700'>
-                    <Link to="" className='px-2  border-r-2 border-gray-300'>
+                    <Link to={`/product/${product._id}`} className='px-2  border-r-2 border-gray-300'>
                         View Product
                     </Link>
                     <Link className='px-2 '>
