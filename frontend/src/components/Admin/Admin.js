@@ -14,11 +14,11 @@ const Admin = () => {
 
 
   return (
-    <div className='flex items-center '>
+    <div className='flex  '>
       <AdminNavbar />
       
       {/* right */}
-      <div>
+      <div className=' w-full h-full m-16'>
       <Routes>
         <Route excat path="/dashboard" element={<Dashboard />} />
         <Route excat path="/users" element={<Users />} />
